@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Port 20000 Server", "Port 20000 Server\Port 20000 Server.csproj", "{031830DB-9D95-4C0E-8E01-1D59C384FACA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Port 20000 WinForm Client", "Port 20000 WinForm Client\Port 20000 WinForm Client.csproj", "{EA26A181-77B4-45D3-A405-C9165569E7B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{2DBE4F74-1A7C-45D1-81BD-5E612BF687CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{031830DB-9D95-4C0E-8E01-1D59C384FACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{031830DB-9D95-4C0E-8E01-1D59C384FACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{031830DB-9D95-4C0E-8E01-1D59C384FACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{031830DB-9D95-4C0E-8E01-1D59C384FACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA26A181-77B4-45D3-A405-C9165569E7B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA26A181-77B4-45D3-A405-C9165569E7B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA26A181-77B4-45D3-A405-C9165569E7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA26A181-77B4-45D3-A405-C9165569E7B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DBE4F74-1A7C-45D1-81BD-5E612BF687CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBE4F74-1A7C-45D1-81BD-5E612BF687CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DBE4F74-1A7C-45D1-81BD-5E612BF687CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBE4F74-1A7C-45D1-81BD-5E612BF687CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
