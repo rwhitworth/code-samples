@@ -42,3 +42,43 @@ char chr(const unsigned char input)
 	char a = input;
 	return a;
 }
+int hex(const char *input)
+{
+	int output = -1;
+	sscanf(input, "%x", &output);
+	return output;
+}
+int index(const char *input, const char *substr)
+{
+	char *res = NULL;
+	if (!input)
+		return -1;
+	if (!substr)
+		return -1;
+	if (strlen(input) == 0 || strlen(substr) == 0)
+	{
+		return -1;
+	}
+	res = strstr(input, substr);
+	if (!res)
+		return -1;
+	return res - input;
+}
+int index_pos(const char* input, const char *substr, const int pos)
+{
+	char *res = NULL;
+	if (!input)
+		return -1;
+	if (!substr)
+		return -1;
+	if (strlen(input) == 0 || strlen(substr) == 0)
+	{
+		return -1;
+	}
+	if (strlen(input) < pos)
+		return -1;
+	res = strstr(input + pos, substr);
+	if (!res)
+		return -1;
+	return res - input;
+}

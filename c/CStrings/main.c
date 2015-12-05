@@ -50,12 +50,48 @@ void test_chr()
 	const char A_char = 'A';
 	assert(chr(A_int) == A_char);
 }
+void test_hex()
+{
+	assert(hex("A") == 10);
+	assert(hex("0A") == 10);
+	assert(hex("FF") == 255);
+	assert(hex("a") == 10);
+	assert(hex("0a") == 10);
+	assert(hex("ff") == 255);
+	assert(hex("Ff") == 255);
+	assert(hex("fF") == 255);
+	// currently failing:
+	// assert(hex("FFQQ") == 0);
+	
+	// TODO: should these tests pass?...
+	// should hex() return results differently?  in a parameter perhaps?
+	assert(hex("Z") == -1);
+	assert(hex("") == -1);
+}
+void test_index()
+{
+	assert(index("hello", "ll") == 2);
+	assert(index("hellollo", "ll") == 2);
+	assert(index("", "1") == -1);
+	assert(index("1", "") == -1);
+}
+void test_index_pos()
+{
+	assert(index_pos("hello", "ll", 0) == 2);
+	assert(index_pos("hello", "ll", 1) == 2);
+	assert(index_pos("hello", "ll", 2) == 2);
+	assert(index_pos("hello", "ll", 3) == -1);
+	// TODO: additional tests needed
+}
 
 void main()
 {
 	test_chop();
 	test_chomp();
 	test_chr();
+	test_hex();
+	test_index();
+	test_index_pos();
 
 	printf("Success is likely.\n");
 	getchar();

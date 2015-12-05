@@ -10,7 +10,7 @@ void chop(char *input);
 char chr(const unsigned char input);
 int hex(const char *input);
 int index(const char *input, const char *substr);
-int index_pos(const char* input, const char *substr, int pos);
+int index_pos(const char* input, const char *substr, const int pos);
 char *lc(const char *input);
 int ord(const char input);
 char *q(const char *input);
