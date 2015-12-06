@@ -70,18 +70,99 @@ void test_hex()
 }
 void test_index()
 {
-	assert(index("hello", "ll") == 2);
-	assert(index("hellollo", "ll") == 2);
+	// multi letter word, single letter search
+	assert(index("hello123", "h") == 0);
+	assert(index("hello123", "e") == 1);
+	assert(index("hello123", "l") == 2);
+	assert(index("hello123", "o") == 4);
+	assert(index("hello123", "3") == 7);
+	assert(index("hello123", "4") == -1);
+
+	// multi letter word, single letter search
+	assert(index("hello123", "h") == 0);
+	assert(index("hello123", "e") == 1);
+	assert(index("hello123", "l") == 2);
+	assert(index("hello123", "o") == 4);
+	assert(index("hello123", "3") == 7);
+	assert(index("hello123", "4") == -1);
+
+	// multi letter word, multi letter search
+	assert(index("hello123", "he") == 0);
+	assert(index("hello123", "ll") == 2);
+	assert(index("hello123", "lo") == 3);
+	assert(index("hello123", "23") == 6);
+
+	// negative tests
+	assert(index("hello123", "Z") == -1);
+	assert(index("hello123", "ZZ") == -1);
+	assert(index("hello123", NULL) == -1);
+	assert(index(NULL, "4") == -1);
 	assert(index("", "1") == -1);
 	assert(index("1", "") == -1);
 }
 void test_index_pos()
 {
-	assert(index_pos("hello", "ll", 0) == 2);
-	assert(index_pos("hello", "ll", 1) == 2);
-	assert(index_pos("hello", "ll", 2) == 2);
-	assert(index_pos("hello", "ll", 3) == -1);
-	// TODO: additional tests needed
+	// multi letter word, single letter search, start at zero
+	assert(index_pos("hello123", "h", 0) == 0);
+	assert(index_pos("hello123", "e", 0) == 1);
+	assert(index_pos("hello123", "l", 0) == 2);
+	assert(index_pos("hello123", "o", 0) == 4);
+	assert(index_pos("hello123", "3", 0) == 7);
+	assert(index_pos("hello123", "4", 0) == -1);
+
+	// multi letter word, single letter search, start middle
+	assert(index_pos("hello123", "h", 2) == -1);
+	assert(index_pos("hello123", "e", 2) == -1);
+	assert(index_pos("hello123", "l", 2) == 2);
+	assert(index_pos("hello123", "o", 2) == 4);
+	assert(index_pos("hello123", "3", 2) == 7);
+	assert(index_pos("hello123", "4", 2) == -1);
+
+	// multi letter word, single letter search, start at last
+	assert(index_pos("hello123", "h", 7) == -1);
+	assert(index_pos("hello123", "e", 7) == -1);
+	assert(index_pos("hello123", "l", 7) == -1);
+	assert(index_pos("hello123", "o", 7) == -1);
+	assert(index_pos("hello123", "3", 7) == 7);
+	assert(index_pos("hello123", "4", 7) == -1);
+
+	// multi letter word, multi letter search
+	assert(index_pos("hello123", "he", 0) == 0);
+	assert(index_pos("hello123", "he", 1) == -1);
+	assert(index_pos("hello123", "ll", 0) == 2);
+	assert(index_pos("hello123", "ll", 1) == 2);
+	assert(index_pos("hello123", "ll", 2) == 2);
+	assert(index_pos("hello123", "ll", 3) == -1);
+
+	// negative tests
+	assert(index_pos("hello123", "h", 100) == -1);
+	assert(index_pos("hello123", NULL, 0) == -1);
+	assert(index_pos(NULL, "4", 0) == -1);
+	assert(index_pos("hello123", "h", -1) == -1);
+}
+void test_lc()
+{
+	char *q = NULL;
+
+	q = lc("HELLO");
+	assert(strcmp(q, "hello") == 0);
+	free(q);
+
+	q = lc("HELLO123");
+	assert(strcmp(q, "hello123") == 0);
+	free(q);
+
+	q = lc("hello");
+	assert(strcmp(q, "hello") == 0);
+	free(q);
+
+	q = lc(NULL);
+	assert(q == NULL);
+	free(q);
+
+	q = lc("");
+	assert(q == NULL);
+	free(q);
 }
 
 void main()
@@ -92,6 +173,9 @@ void main()
 	test_hex();
 	test_index();
 	test_index_pos();
+	test_lc();
+
+
 
 	printf("Success is likely.\n");
 	getchar();
