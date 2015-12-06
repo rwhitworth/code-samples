@@ -1,8 +1,11 @@
-#define _CRT_SECURE_NO_WARNINGS
-#define _CRT_NONSTDC_NO_DEPRECATE
+#ifdef _MSC_VER
+	#define _CRT_SECURE_NO_WARNINGS
+	#define _CRT_NONSTDC_NO_DEPRECATE
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h> // tolower() for lc()
+#include <stdlib.h> // malloc() for q() and qq()
 #include "CStrings.h"
 
 int chomp(char *input, const char remove_char)
@@ -79,7 +82,7 @@ int index_pos(const char* input, const char *substr, const int pos)
 	}
 	if (pos < 0)
 		return -1;
-	if (strlen(input) < pos)
+	if (strlen(input) < (unsigned int)pos)
 		return -1;
 	res = strstr(input + pos, substr);
 	if (!res)
@@ -90,7 +93,7 @@ char *lc(const char *input)
 {
 	if (!input)
 		return NULL;
-	int slen = strlen(input);
+	unsigned int slen = strlen(input);
 	if (slen == 0)
 		return NULL;
 	
@@ -101,5 +104,25 @@ char *lc(const char *input)
 	{
 		result[i] = tolower(result[i]);
 	}
+	return result;
+}
+int ord(const char input)
+{
+	return input;
+}
+char *q(const char *input)
+{
+	if (!input)
+		return NULL;
+	unsigned int slen = strlen(input);
+	if (slen == 0)
+		return NULL;
+	char *result = malloc(sizeof(char) * slen + 3); // 3 == 2 new characters, plus zero EOL character
+	if (!result)
+		return NULL;
+	result[0] = 0;
+	strcat(result, "'");
+	strcat(result, input);
+	strcat(result, "'");
 	return result;
 }

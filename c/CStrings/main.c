@@ -1,5 +1,7 @@
-#define _CRT_SECURE_NO_WARNINGS
-#define _CRT_NONSTDC_NO_DEPRECATE
+#ifdef _MSC_VER
+	#define _CRT_SECURE_NO_WARNINGS
+	#define _CRT_NONSTDC_NO_DEPRECATE
+#endif
 #include "CStrings.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,47 +10,51 @@
 
 void test_chop()
 {
-	char *q = strdup("hello");
-	assert(q != 0);
-	chop(q);
-	assert(strcmp("hell", q) == 0);
-	free(q);
+	char *result = strdup("hello");
+	
+	assert(result != 0);
+	chop(result);
+	assert(strcmp("hell", result) == 0);
+	free(result);
 }
 void test_chomp()
 {
-	char *q = strdup("hello");
-	assert(q != 0);
-	int result = chomp(q, 'o');
-	assert(strcmp("hell", q) == 0);
+	char *resultstr = strdup("hello");
+	
+	assert(resultstr != NULL);
+	int result = chomp(resultstr, 'o');
+	assert(strcmp("hell", resultstr) == 0);
 	assert(result == 1);
-	result = chomp(q, 'l');
-	assert(strcmp("he", q) == 0);
+	result = chomp(resultstr, 'l');
+	assert(strcmp("he", resultstr) == 0);
 	assert(result == 2);
-	result = chomp(q, 'Z');
-	assert(strcmp("he", q) == 0);
+	result = chomp(resultstr, 'Z');
+	assert(strcmp("he", resultstr) == 0);
 	assert(result == 0);
-	result = chomp(q, 'e');
-	assert(strcmp("h", q) == 0);
+	result = chomp(resultstr, 'e');
+	assert(strcmp("h", resultstr) == 0);
 	assert(result == 1);
-	result = chomp(q, 'h');
-	assert(strcmp("", q) == 0);
+	result = chomp(resultstr, 'h');
+	assert(strcmp("", resultstr) == 0);
 	assert(result == 1);
-	result = chomp(q, 'Z');
-	assert(strcmp("", q) == 0);
+	result = chomp(resultstr, 'Z');
+	assert(strcmp("", resultstr) == 0);
 	assert(result == 0);
-	free(q);
+	free(resultstr);
 
-	q = strdup("aaaaa");
-	result = chomp(q, 'a');
-	assert(strcmp("", q) == 0);
+	resultstr = strdup("aaaaa");
+	result = chomp(resultstr, 'a');
+	assert(strcmp("", resultstr) == 0);
 	assert(result == 5);
-	free(q);
+	free(resultstr);
 }
 void test_chr()
 {
-	const int A_int = 65;
-	const char A_char = 'A';
-	assert(chr(A_int) == A_char);
+	assert(chr(' ') == 32);
+	assert(chr('A') == 65);
+	assert(chr('Z') == 90);
+	// perfectly valid test, but causes compilation warnings.. so disabled
+	//assert(chr(NULL) == 0);
 }
 void test_hex()
 {
@@ -142,27 +148,51 @@ void test_index_pos()
 }
 void test_lc()
 {
-	char *q = NULL;
+	char *result = NULL;
 
-	q = lc("HELLO");
-	assert(strcmp(q, "hello") == 0);
-	free(q);
+	result = lc("HELLO");
+	assert(strcmp(result, "hello") == 0);
+	free(result);
 
-	q = lc("HELLO123");
-	assert(strcmp(q, "hello123") == 0);
-	free(q);
+	result = lc("HELLO123");
+	assert(strcmp(result, "hello123") == 0);
+	free(result);
 
-	q = lc("hello");
-	assert(strcmp(q, "hello") == 0);
-	free(q);
+	result = lc("hello");
+	assert(strcmp(result, "hello") == 0);
+	free(result);
 
-	q = lc(NULL);
-	assert(q == NULL);
-	free(q);
+	result = lc(NULL);
+	assert(result == NULL);
+	free(result);
 
-	q = lc("");
-	assert(q == NULL);
-	free(q);
+	result = lc("");
+	assert(result == NULL);
+	free(result);
+}
+void test_ord()
+{
+	assert(ord(' ') == 32);
+	assert(ord('A') == 65);
+	assert(ord('Z') == 90);
+	// perfectly valid test, but causes compilation warnings.. so disabled
+	//assert(ord(NULL) == 0);
+}
+void test_q()
+{
+	char *result = NULL;
+	
+	result = q("hello");
+	assert(strcmp(result, "'hello'") == 0);
+	free(result);
+
+	result = q("");
+	assert(result == NULL);
+	free(result);
+
+	result = q(NULL);
+	assert(result == NULL);
+	free(result);
 }
 
 void main()
@@ -174,7 +204,8 @@ void main()
 	test_index();
 	test_index_pos();
 	test_lc();
-
+	test_ord();
+	test_q();
 
 
 	printf("Success is likely.\n");
