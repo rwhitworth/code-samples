@@ -153,3 +153,28 @@ char *reverse(const char *input)
 	}
 	return result;
 }
+int rindex(const char *input, const char *substr)
+{
+	if (!input)
+		return -1;
+	if (!substr)
+		return -1;
+	int slen = strlen(input);
+	if (slen == 0)
+		return -1;
+	int slen2 = strlen(substr);
+	if (slen2 == 0)
+		return -1;
+	char *rev = reverse(input);
+	if (!rev)
+		return -1;
+	char *rsubstr = reverse(substr);
+	if (!rsubstr)
+		return -1;
+	int result = index(rev, rsubstr);
+	free(rev);
+	free(rsubstr);
+	if (result < 0)
+		return -1;
+	return slen - result - slen2;
+}

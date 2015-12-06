@@ -234,6 +234,16 @@ void test_reverse()
 	assert(result == NULL);
 	free(result);
 }
+void test_rindex()
+{
+	assert(rindex("this that this", "this") == 10);
+	assert(rindex("this that this1", "this") == 10);
+	assert(rindex("thisthisthis1", "thisthis1") == 4);
+	assert(rindex("this", "this") == 0);
+	assert(rindex("this", "that") == -1);
+	assert(rindex("this", NULL) == -1);
+	assert(rindex(NULL, "that") == -1);
+}
 
 void main()
 {
@@ -248,6 +258,7 @@ void main()
 	test_q();
 	test_qq();
 	test_reverse();
+	test_rindex();
 
 	printf("Success is likely.\n");
 	getchar();
