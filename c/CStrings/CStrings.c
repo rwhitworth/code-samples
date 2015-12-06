@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h> // tolower() for lc()
-#include <stdlib.h> // malloc() for q() and qq()
+#include <stdlib.h> // malloc() for q() and qq(), calloc() for reverse()
 #include "CStrings.h"
 
 int chomp(char *input, const char remove_char)
@@ -134,5 +134,22 @@ char *q(const char *input)
 }
 char *qq(const char *input)
 {
-	return _bookend(input, "\"");
+	return _bookend(input, """");
+}
+char *reverse(const char *input)
+{
+	if (!input)
+		return NULL;
+	unsigned int slen = strlen(input);
+	if (slen == 0)
+		return NULL;
+	// call calloc, so memory is zero filled
+	char *result = calloc(1, sizeof(char) * slen + 1);
+	if (!result)
+		return NULL;
+	for (size_t i = 0; i < slen; i++)
+	{
+		result[i] = input[slen - i - 1];
+	}
+	return result;
 }

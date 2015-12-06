@@ -194,6 +194,46 @@ void test_q()
 	assert(result == NULL);
 	free(result);
 }
+void test_qq()
+{
+	char *result = NULL;
+
+	result = qq("hello");
+	assert(strcmp(result, """hello""") == 0);
+	free(result);
+
+	result = qq("");
+	assert(result == NULL);
+	free(result);
+
+	result = qq(NULL);
+	assert(result == NULL);
+	free(result);
+}
+void test_reverse()
+{
+	char *result = NULL;
+	
+	result = reverse("hello");
+	assert(strcmp(result, "olleh") == 0);
+	free(result);
+
+	result = reverse("a");
+	assert(strcmp(result, "a") == 0);
+	free(result);
+
+	result = reverse("ab");
+	assert(strcmp(result, "ba") == 0);
+	free(result);
+
+	result = reverse("");
+	assert(result == NULL);
+	free(result);
+
+	result = reverse(NULL);
+	assert(result == NULL);
+	free(result);
+}
 
 void main()
 {
@@ -206,7 +246,8 @@ void main()
 	test_lc();
 	test_ord();
 	test_q();
-
+	test_qq();
+	test_reverse();
 
 	printf("Success is likely.\n");
 	getchar();
