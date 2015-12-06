@@ -110,9 +110,11 @@ int ord(const char input)
 {
 	return input;
 }
-char *q(const char *input)
+char *_bookend(const char *input, const char *bookend)
 {
 	if (!input)
+		return NULL;
+	if (!bookend)
 		return NULL;
 	unsigned int slen = strlen(input);
 	if (slen == 0)
@@ -121,8 +123,16 @@ char *q(const char *input)
 	if (!result)
 		return NULL;
 	result[0] = 0;
-	strcat(result, "'");
+	strcat(result, bookend);
 	strcat(result, input);
-	strcat(result, "'");
+	strcat(result, bookend);
 	return result;
+}
+char *q(const char *input)
+{
+	return _bookend(input, "'");
+}
+char *qq(const char *input)
+{
+	return _bookend(input, "\"");
 }
