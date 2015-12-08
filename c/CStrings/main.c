@@ -1,6 +1,8 @@
 #ifdef _MSC_VER
 	#define _CRT_SECURE_NO_WARNINGS
 	#define _CRT_NONSTDC_NO_DEPRECATE
+	#include <crtdbg.h>	
+	#define _CRTDBG_MAP_ALLOC
 #endif
 #include "CStrings.h"
 #include <stdlib.h>
@@ -314,6 +316,52 @@ void test_substr()
 	assert(result == NULL);
 	free(result);
 }
+void test_substr_replace()
+{
+	char *result = NULL;
+
+	result = substr_replace("hello", 0, 1, "h");
+	assert(strcmp(result, "hello") == 0);
+	free(result);
+
+	result = substr_replace("hello", 1, 1, "e");
+	assert(strcmp(result, "hello") == 0);
+	free(result);
+
+	result = substr_replace("hello", 0, 2, "he");
+	assert(strcmp(result, "hello") == 0);
+	free(result);
+
+	result = substr_replace("hello", 0, 1, " ");
+	assert(strcmp(result, " ello") == 0);
+	free(result);
+
+	result = substr_replace("hello", 0, 1, "hello");
+	assert(strcmp(result, "helloello") == 0);
+	free(result);
+
+	result = substr_replace("hello", 0, 5, "1");
+	assert(strcmp(result, "1") == 0);
+	free(result);
+
+	result = substr_replace("hello", 0, 5, "1");
+	assert(strcmp(result, "1") == 0);
+	free(result);
+
+	result = substr_replace("hello", 0, 4, "1");
+	assert(strcmp(result, "1o") == 0);
+	free(result);
+
+	// // TODO: Is this test valid?
+	result = substr_replace("hello", 5, 1, "h");
+	assert(strcmp(result, "helloh") == 0);
+	free(result);
+	
+	// // TODO: Is this test valid?
+	result = substr_replace("hello", 5, 1, "1");
+	assert(strcmp(result, "hello1") == 0);
+	free(result);
+}
 void test_uc()
 {
 	char *result = NULL;
@@ -354,8 +402,13 @@ void main()
 	test_reverse();
 	test_rindex();
 	test_substr();
+	test_substr_replace();
 	test_uc();
 
+#ifdef _MSC_VER
+	_CrtDumpMemoryLeaks();
+#endif
+	
 
 	printf("Success is likely.\n");
 	getchar();
