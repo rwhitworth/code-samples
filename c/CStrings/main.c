@@ -314,6 +314,30 @@ void test_substr()
 	assert(result == NULL);
 	free(result);
 }
+void test_uc()
+{
+	char *result = NULL;
+
+	result = uc("hello");
+	assert(strcmp(result, "HELLO") == 0);
+	free(result);
+
+	result = uc("hello123");
+	assert(strcmp(result, "HELLO123") == 0);
+	free(result);
+
+	result = uc("HELLO");
+	assert(strcmp(result, "HELLO") == 0);
+	free(result);
+
+	result = uc(NULL);
+	assert(result == NULL);
+	free(result);
+
+	result = uc("");
+	assert(result == NULL);
+	free(result);
+}
 
 void main()
 {
@@ -330,6 +354,8 @@ void main()
 	test_reverse();
 	test_rindex();
 	test_substr();
+	test_uc();
+
 
 	printf("Success is likely.\n");
 	getchar();

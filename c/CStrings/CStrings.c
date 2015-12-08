@@ -178,7 +178,6 @@ int rindex(const char *input, const char *substr)
 		return -1;
 	return slen - result - slen2;
 }
-
 char *substr(const char *input, const int offset, const int length)
 {
 	if (!input)
@@ -202,5 +201,23 @@ char *substr(const char *input, const int offset, const int length)
 		result[i] = input[offset + i];
 	}
 
+	return result;
+}
+// char *substr_replace(const char *input, const int offset, const int length, const char *replstr)
+char *uc(const char *input)
+{
+	if (!input)
+		return NULL;
+	unsigned int slen = strlen(input);
+	if (slen == 0)
+		return NULL;
+
+	char *result = strdup(input);
+	if (!result)
+		return NULL;
+	for (size_t i = 0; i < slen; i++)
+	{
+		result[i] = toupper(result[i]);
+	}
 	return result;
 }
