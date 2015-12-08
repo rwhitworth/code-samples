@@ -178,3 +178,29 @@ int rindex(const char *input, const char *substr)
 		return -1;
 	return slen - result - slen2;
 }
+
+char *substr(const char *input, const int offset, const int length)
+{
+	if (!input)
+		return NULL;
+	if (offset < 0)
+		return NULL;
+	int slen = strlen(input);
+	if (slen <= 0)
+		return NULL;
+	if ((length <= 0) || (slen < offset + length))
+		return NULL;
+
+	char *result = malloc(sizeof(char) * (length + 1));
+
+	if (!result)
+		return NULL;
+	
+	result[length] = 0;
+	for (size_t i = 0; i <= (length - 1); i++)
+	{
+		result[i] = input[offset + i];
+	}
+
+	return result;
+}

@@ -4,6 +4,7 @@
 extern "C" {
 #endif
 
+#define MAX_SPLIT_CSTRING 1024
 
 int chomp(char *input, const char remove_char);
 void chop(char *input);

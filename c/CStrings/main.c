@@ -244,6 +244,76 @@ void test_rindex()
 	assert(rindex("this", NULL) == -1);
 	assert(rindex(NULL, "that") == -1);
 }
+void test_substr()
+{
+	char *result = NULL;
+
+	result = substr("hello", 0, 0);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("hello", 0, 1);
+	assert(strcmp(result, "h") == 0);
+	free(result);
+
+	result = substr("hello", 0, 2);
+	assert(strcmp(result, "he") == 0);
+	free(result);
+
+	result = substr("hello", 0, 5);
+	assert(strcmp(result, "hello") == 0);
+	free(result);
+
+	
+	result = substr("hello", 1, 1);
+	assert(strcmp(result, "e") == 0);
+	free(result);
+
+	result = substr("hello", 1, 2);
+	assert(strcmp(result, "el") == 0);
+	free(result);
+
+	result = substr("hello", 1, 3);
+	assert(strcmp(result, "ell") == 0);
+	free(result);
+
+	result = substr("hello", 1, 4);
+	assert(strcmp(result, "ello") == 0);
+	free(result);
+
+
+	result = substr("hello", 1, 6);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("hello", 6, 1);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("hello", 0, 6);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("hello", 6, 0);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("hello", -1, 2);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("hello", 2, -1);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("h", 0, 2);
+	assert(result == NULL);
+	free(result);
+
+	result = substr("", 0, 2);
+	assert(result == NULL);
+	free(result);
+}
 
 void main()
 {
@@ -259,6 +329,7 @@ void main()
 	test_qq();
 	test_reverse();
 	test_rindex();
+	test_substr();
 
 	printf("Success is likely.\n");
 	getchar();
