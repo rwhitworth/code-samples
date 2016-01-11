@@ -36,11 +36,14 @@ void DieWithError(char *errorMessage)
 
 int main(int argc, char *argv)
 {
-	DNSClientRequest *request;
-	DNSClientResponse *response;
+	DNSClientRequest *request = NULL;
+	DNSClientResponse *response = NULL;
 	request = calloc(1, sizeof(DNSClientRequest));
-	response = calloc(1, sizeof(DNSClientResponse));
-	if ((!request) || (!response))
+	// response should be getting malloc()'d by GetHostByName
+	// response = calloc(1, sizeof(DNSClientResponse));
+	if ((!request) 
+		// || (!response)
+		)
 		DieWithError("calloc() error");
 	request->AdditionalRRs = 0;
 	request->AnswerRRs = 0;

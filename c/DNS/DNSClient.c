@@ -81,13 +81,22 @@ uint32_t GetHostByName(const DNSClientRequest *Request, DNSClientResponse *Respo
 	char *DNSQuery;
 	int DNSQueryLen = 0;
 	WSADATA wsaData;
-
 	uint16_t TempBuff = 0;
+
+	char ReceiveBuffer[RCVBUFFSIZE];
+	int ReceiveBufferLen = 0;
+	int ReceiveBufferSize = 0;
 
 	// TODO: Calculate the buffer required more accurately
 	DNSQuery = calloc(1, 512);
 	if (!DNSQuery)
 		DNSClient_DieWithError("calloc() error 1");
+	Response = calloc(1, sizeof(DNSClientResponse));
+	if (!Response)
+	{
+		free(DNSQuery);
+		DNSClient_DieWithError("calloc() error 2");
+	}
 
 #ifdef _WIN32
 	if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0)
@@ -147,6 +156,30 @@ uint32_t GetHostByName(const DNSClientRequest *Request, DNSClientResponse *Respo
 	
 	if (send(sock, DNSQuery, DNSQueryLen, 0) != DNSQueryLen)
 		DNSClient_DieWithError("send() sent a different number of bytes than expected");
+
+	// The request has been sent.  Receive the response and deal with it.
+
+	ReceiveBufferSize = sizeof(DNSServerAddr);
+	ReceiveBufferLen = recvfrom(sock, ReceiveBuffer, RCVBUFFSIZE, 0, (struct sockaddr *) &DNSServerAddr, &ReceiveBufferSize);
+	if (!ReceiveBufferLen)
+		DNSClient_DieWithError("recvfrom() failed");
+
+	// Now we cheat... the last 4 bytes of the packet contain an IP address for the server in question
+	// TODO: Stop cheating and parse the packet correctly
+
+	unsigned char IP[4];
+
+	memcpy(&IP, ReceiveBuffer + ReceiveBufferLen - 4, 4);
+
+	Response->Answers = calloc(1, sizeof(DNSClientResponseAnswers));
+	if (!Response->Answers)
+	{
+		free(DNSQuery);
+		DNSClient_DieWithError("calloc() error 3");
+	}
+	Response->AnswerRRs = 1;
+	// Response->Answers->HostAddress = (uint32_t)IP;
+	memcpy(&Response->Answers->HostAddress, &IP, 4);
 
 #ifdef _WIN32
 	closesocket(sock);

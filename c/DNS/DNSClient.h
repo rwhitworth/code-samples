@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define RCVBUFFSIZE 32 
+#define RCVBUFFSIZE 512 
 
 typedef struct DNSClientRequest
 {
