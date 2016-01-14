@@ -82,21 +82,21 @@ uint32_t GetHostByName(const DNSClientRequest *Request, DNSClientResponse *Respo
 	int DNSQueryLen = 0;
 	WSADATA wsaData;
 	uint16_t TempBuff = 0;
+	int IPv4sprintfResponse = 0;
 
 	char ReceiveBuffer[RCVBUFFSIZE];
 	int ReceiveBufferLen = 0;
 	int ReceiveBufferSize = 0;
 
-	// TODO: Calculate the buffer required more accurately
-	DNSQuery = calloc(1, 512);
-	if (!DNSQuery)
-		DNSClient_DieWithError("calloc() error 1");
-	Response = calloc(1, sizeof(DNSClientResponse));
 	if (!Response)
 	{
-		free(DNSQuery);
-		DNSClient_DieWithError("calloc() error 2");
+		DNSClient_DieWithError("calloc() error 1");
 	}
+
+	// TODO: Calculate the buffer required more accurately
+	DNSQuery = calloc(1, RCVBUFFSIZE);
+	if (!DNSQuery)
+		DNSClient_DieWithError("calloc() error 2");
 
 #ifdef _WIN32
 	if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0)
@@ -180,6 +180,21 @@ uint32_t GetHostByName(const DNSClientRequest *Request, DNSClientResponse *Respo
 	Response->AnswerRRs = 1;
 	// Response->Answers->HostAddress = (uint32_t)IP;
 	memcpy(&Response->Answers->HostAddress, &IP, 4);
+
+	// Max size an IPv4 Address in string notation is 17 bytes
+	Response->Answers->HostAddressString = calloc(1, IPV4STRINGSIZE);
+	if (!Response->Answers->HostAddressString)
+	{
+		free(DNSQuery);
+		DNSClient_DieWithError("calloc() error 4");
+	}
+	IPv4sprintfResponse = sprintf(Response->Answers->HostAddressString, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
+	realloc(Response->Answers->HostAddressString, IPv4sprintfResponse + 1);
+	if (!Response->Answers->HostAddressString)
+	{
+		free(DNSQuery);
+		DNSClient_DieWithError("calloc() error 5");
+	}
 
 #ifdef _WIN32
 	closesocket(sock);

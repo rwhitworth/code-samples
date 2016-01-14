@@ -39,10 +39,9 @@ int main(int argc, char *argv)
 	DNSClientRequest *request = NULL;
 	DNSClientResponse *response = NULL;
 	request = calloc(1, sizeof(DNSClientRequest));
-	// response should be getting malloc()'d by GetHostByName
-	// response = calloc(1, sizeof(DNSClientResponse));
+	response = calloc(1, sizeof(DNSClientResponse));
 	if ((!request) 
-		// || (!response)
+		|| (!response)
 		)
 		DieWithError("calloc() error");
 	request->AdditionalRRs = 0;
@@ -55,6 +54,9 @@ int main(int argc, char *argv)
 	request->Flags = 256;
 	request->Hostname = "google.com";
 	GetHostByName(request, response);
+
+	printf("%s\n", response->Answers->HostAddressString);
+	getchar();
 
 	return 0;
 }

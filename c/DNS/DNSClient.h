@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define RCVBUFFSIZE 512 
+#define IPV4STRINGSIZE 17 // (4 octets * 3 characters) + (4 dots) + ending zero
 
 typedef struct DNSClientRequest
 {
@@ -47,6 +48,7 @@ typedef struct DNSClientResponseAnswers
 	uint32_t HostTTL;
 	uint16_t DataLength;
 	uint32_t HostAddress;
+	char *HostAddressString;
 } DNSClientResponseAnswers;
 
 typedef struct DNSClientResponse
