@@ -26,11 +26,11 @@ typedef struct DNSClientResponseFlags
 	uint32_t Authoritative : 1;
 	uint32_t Truncated : 1;
 	uint32_t RecursionDesired : 1;
-	uint32_t RecursionAvailable : 1;
-	uint32_t Reserved_Z : 1;
-	uint32_t AnswerAuthenticated : 1;
-	uint32_t NonAuthenticatedData : 1;
 	uint32_t ReplyCode : 4;
+	uint32_t NonAuthenticatedData : 1;
+	uint32_t AnswerAuthenticated : 1;
+	uint32_t Reserved_Z : 1;
+	uint32_t RecursionAvailable : 1;
 } DNSClientResponseFlags;
 
 typedef struct DNSClientResponseHost

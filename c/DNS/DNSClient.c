@@ -164,11 +164,38 @@ uint32_t GetHostByName(const DNSClientRequest *Request, DNSClientResponse *Respo
 	if (!ReceiveBufferLen)
 		DNSClient_DieWithError("recvfrom() failed");
 
+	memcpy(&Response->TransactionID, ReceiveBuffer, 2);
+	memcpy(&Response->Flags, ReceiveBuffer + 2, 2);
+	memcpy(&Response->Questions, ReceiveBuffer + 4, 2);
+	memcpy(&Response->AnswerRRs, ReceiveBuffer + 6, 2);
+	memcpy(&Response->AuthorityRRs, ReceiveBuffer + 8, 2);
+	memcpy(&Response->AdditionalRRs, ReceiveBuffer + 10, 2);
+	
+	Response->TransactionID = htons(Response->TransactionID);
+	Response->Questions = htons(Response->Questions);
+	Response->AnswerRRs = htons(Response->AnswerRRs);
+	Response->AuthorityRRs = htons(Response->AuthorityRRs);
+	Response->AdditionalRRs = htons(Response->AdditionalRRs);
+
+	uint32_t datalength = 0;
+	memcpy(&datalength, ReceiveBuffer + ReceiveBufferLen - 6, 2);
+	datalength = htons(datalength);
+	if (datalength != 4)
+	{
+		// We have a rather major problem now...
+		// Only IPv4 is handled.  Although calculations to get to this
+		// point would fail if IPv4 isn't being used. 
+		//
+		// Logic is in place, but non-functional.
+		// TODO: Properly parse answers and queries, and check this data properly
+		free(DNSQuery);
+		DNSClient_DieWithError("datalength != 4");
+	}
+
 	// Now we cheat... the last 4 bytes of the packet contain an IP address for the server in question
 	// TODO: Stop cheating and parse the packet correctly
 
 	unsigned char IP[4];
-
 	memcpy(&IP, ReceiveBuffer + ReceiveBufferLen - 4, 4);
 
 	Response->Answers = calloc(1, sizeof(DNSClientResponseAnswers));
@@ -178,8 +205,13 @@ uint32_t GetHostByName(const DNSClientRequest *Request, DNSClientResponse *Respo
 		DNSClient_DieWithError("calloc() error 3");
 	}
 	Response->AnswerRRs = 1;
-	// Response->Answers->HostAddress = (uint32_t)IP;
 	memcpy(&Response->Answers->HostAddress, &IP, 4);
+	memcpy(&Response->Answers->HostTTL, ReceiveBuffer + ReceiveBufferLen - 10, 4);
+	memcpy(&Response->Answers->HostClass, ReceiveBuffer + ReceiveBufferLen - 12, 2);
+	memcpy(&Response->Answers->HostType, ReceiveBuffer + ReceiveBufferLen - 14, 2);
+	Response->Answers->HostTTL = htonl(Response->Answers->HostTTL);
+	Response->Answers->HostClass = htons(Response->Answers->HostClass);
+	Response->Answers->HostType = htons(Response->Answers->HostType);
 
 	// Max size an IPv4 Address in string notation is 17 bytes
 	Response->Answers->HostAddressString = calloc(1, IPV4STRINGSIZE);
